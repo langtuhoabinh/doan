@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Jobs\SaveLog;
 use App\Models\Category;
+use App\Models\Logging;
 use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use DB;
 
 class categoriesController extends Controller
 {
@@ -58,13 +62,16 @@ class categoriesController extends Controller
                 $image->move(public_path().'/images/', $name);
             }
         }
-//        dd($request->all());
+//        dd($request->all());\DB::enableQueryLog();
         $category = new Category();
         $category->CategoryImage = $name;
         $category->CategoryName = request('CategoryName');
         $category->status = request('status');
+        \DB::enableQueryLog();
         $category->save();
-
+//        $query_infor = \DB::getQueryLog();
+//        dd($query_infor);
+//        dd(1);
         return redirect()->route('admin.category');
     }
 
@@ -107,6 +114,7 @@ class categoriesController extends Controller
         return view('admin.Categories.CategoriesUpdate',['user' => $user, 'categoryUpdate' => $categoryUpdate]);
     }
     public function updateProcess(Request $request, $id){
+        \DB::enableQueryLog();
         Category::where('CategoryID', $id)
             ->update(['CategoryName' => request('CategoryName')]);
 
@@ -122,9 +130,14 @@ class categoriesController extends Controller
      */
     public function destroy($id)
     {
+        \DB::enableQueryLog();
         Category::where('CategoryID',$id)->delete();
-
+//        $query_infor = \DB::getQueryLog();
+//        $class = get_class($this);
+//        dd($class);
+//        SaveLog::dispatch(new SaveLog($destroy));
         return redirect()->route('admin.category');
-
     }
 }
+
+

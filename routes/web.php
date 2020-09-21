@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\SaveLog;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -32,7 +33,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', "middleware" => "auth
         //        Route::get('/forbidden','dashboardController@forbidden')->name("admin.forbidden");
         //   admintrator page
 
-        Route::group([ "middleware" => "CheckSup"], function () {
+        Route::group([ "middleware" =>  "CheckSup"], function () {
             Route::get('/manage', 'AdmintratorController@index')->name("admin.admintrator");
             Route::get('/form/{id}', 'AdmintratorController@edit')->name("admin.admintrator.form");
             Route::post('/update/{id}', 'AdmintratorController@update')->name("admin.admintrator.update");
@@ -47,10 +48,13 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', "middleware" => "auth
             //   category
             Route::get('category', 'categoriesController@index')->name("admin.category");
             Route::get('category/update/{id?}', 'categoriesController@update')->name("admin.category.update");
-            Route::post('category/updateProcess/{id}', 'categoriesController@updateProcess')->name("admin.category.updateProcess");
-            Route::get('category/delete/{id}', 'categoriesController@destroy')->name("admin.category.delete");
+            Route::post('category/updateProcess/{id}', 'categoriesController@updateProcess')->name("admin.category.updateProcess")
+                ->middleware(SaveLog::class);
+            Route::get('category/delete/{id}', 'categoriesController@destroy')->name("admin.category.delete")
+                ->middleware(SaveLog::class);
             Route::get('category/insert', 'categoriesController@create')->name("admin.category.insert");
-            Route::post('category/store', 'categoriesController@store')->name("admin.category.store");
+            Route::post('category/store', 'categoriesController@store')->name("admin.category.store")
+                ->middleware(SaveLog::class);
 
             //    Products
             Route::get('/products', 'ProductController@index')->name("admin.products");

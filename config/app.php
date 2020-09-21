@@ -40,7 +40,9 @@ return [
     */
 
     'debug' => (bool) env('APP_DEBUG', false),
-
+    'log' => 'daily',
+    'log_max_files' => 30,
+    'log_level' => env('APP_LOG_LEVEL', 'error'),
     /*
     |--------------------------------------------------------------------------
     | Application URL

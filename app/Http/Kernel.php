@@ -20,6 +20,7 @@ class Kernel extends HttpKernel
         \Illuminate\Foundation\Http\Middleware\ValidatePostSize::class,
         \App\Http\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
+//        \App\Http\Middleware\SaveLog::class,
     ];
 
     /**
@@ -94,5 +95,6 @@ class Kernel extends HttpKernel
         'CheckSup' => \App\Http\Middleware\CheckRole::class,
         'CheckAdmin1' => \App\Http\Middleware\CheckAdmin1::class,
         'CheckProcessor' => \App\Http\Middleware\CheckProcessor::class,
+        'SaveLog' => \App\Http\Middleware\SaveLog::class,
     ];
 }
